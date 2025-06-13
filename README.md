@@ -69,6 +69,16 @@ PiFlow serves as a Plug-and-Play method, establishing a novel paradigm shift in 
 
 ## 🔧 Setup and Run
 
+### 0. Install
+
+To prepare the environment, we recommend executing the following conda instructions: 
+
+```shell
+git clone https://github.com/amair-lab/PiFlow && cd PiFlow
+conda create -n piflow -f environment.yml
+```
+
+
 ### 1. Launch Dynamic Environment
 
 We have developed three types of experiments named `AgenX...` (e.g., `AgenX_Chembl35`).
