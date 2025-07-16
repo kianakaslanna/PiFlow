@@ -75,7 +75,14 @@ To prepare the environment, we recommend executing the following conda instructi
 
 ```shell
 git clone https://github.com/amair-lab/PiFlow && cd PiFlow
-conda create -n piflow -f environment.yml
+conda create -f environment.yml  # The environ name will be `piflow`
+conda activate piflow 
+
+# We suggest to use mamba for faster installation, though conda works fine, but for preferences... well
+# If you want to use mamba for package management, run these commands:
+# conda install mamba -n base -c conda-forge
+# mamba env create -f environment.yml
+# mamba activate piflow
 ```
 
 
