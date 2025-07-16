@@ -100,18 +100,39 @@ python launch.py
 You need to apply for any **OpenAI compatible API KEYs** for calling any models. Ensure the model embedded at the experiment agent is able to use tools.
 
 
-### 3. Run PiFlow
+### 3. About Configs and Demo
 
-You can first configure the running commands in the `/configs/` directory, or simply try the demo:
+You can first configure the running commands in the `/configs/` directory, or simply try the demo after model configuration.
+
+In the config for model, every agent contains the config of API and its display mode:
+
+```yaml
+        streaming:  # bool, true means the output will be in streaming, the same with the original API output
+        api_config:
+            base_url:   # Follow the OpenAI API
+            model_name: # Follow the OpenAI API
+            is_reasoning:   # bool, ture if it is a reasoning model like o1, R1, QwQ, etc. (typically has <think></think> token)
+            api_key:    # Follow the OpenAI API
+            temperature:    # Follow the OpenAI API, generally we set 0.6 or 0.4
+            max_tokens:     # We set 4096 here
+        tools: []   # a list of the tools name, it should be contained and claimed in the `tools/__init__.py`, and follows the YAML's list fashion
+```
+
+Other field like `enabled` means if this Agent is a member of group chatting. Fields like `name` and `description` are the same to the building of Agent profile. Note that, the `name` field should not contain any blank char. 
+
+After configuration, you can run the demo scenario of nanohelix material discovery, by running:
 
 ```shell
 bash ./run_demo.sh
 ```
 
+You will see the detailed output with colored chatting history at the command line. Our philosophy is, one config file corresponds to one task, and you should prepare both task config and model config for running PiFlow. 
+
+
 
 ## 🪄 Adapt to Your Own Task
 
-There are many possible areas that can use PiFlow to assist the discovery processes: 
+There are many possible tasks that we can use PiFlow to assist the discovery processes: 
 
 <div align="center">
 <table style="margin-left: auto; margin-right: auto;">
