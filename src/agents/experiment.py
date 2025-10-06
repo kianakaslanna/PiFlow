@@ -16,7 +16,6 @@ from autogen_agentchat.base import Response
 from autogen_agentchat.messages import ToolCallSummaryMessage, ChatMessage, AgentEvent, ThoughtEvent, BaseAgentEvent, BaseChatMessage
 from autogen_core import RoutedAgent, MessageContext, message_handler, FunctionCall, CancellationToken
 from autogen_core.models import FunctionExecutionResult, CreateResult, AssistantMessage, RequestUsage
-from autogen_core.tools import Workbench
 from pydantic.dataclasses import dataclass
 
 

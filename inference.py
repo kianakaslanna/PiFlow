@@ -2,6 +2,8 @@ import asyncio
 import os
 import argparse
 import logging
+import sys
+import time
 from typing import Dict, Any, Optional, Union, Sequence
 
 from autogen_core.model_context import BufferedChatCompletionContext
@@ -10,13 +12,13 @@ from autogen_agentchat.conditions import TextMentionTermination
 from autogen_agentchat.messages import AgentEvent, ChatMessage
 from autogen_agentchat.ui import Console
 from autogen_core.models import ModelFamily
-from autogen_core.tools import FunctionTool, Tool
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 
 from autogen_ext.models.cache import ChatCompletionCache, CHAT_CACHE_VALUE_TYPE
 from autogen_ext.cache_store.diskcache import DiskCacheStore
 from diskcache import Cache
 
+import tools
 from src.agents import (
     UserProxy,
     Planner,
@@ -26,12 +28,11 @@ from src.agents import (
 from src.group.manage import (
     HypoValidGroupChat
 )
-import src.tools as tools
 from src.utils.config import load_config, init_results
-from src.tools.tools_registry import collect_tools
 from src.utils.console import Console
 from src.group.workflow import PrincipleFlow
 
+from src.utils.process import ServerProcessManager
 
 logging.basicConfig(
     level=logging.ERROR,
@@ -76,14 +77,7 @@ class PriM:
         for key in self.task_config.get("environment").keys():
             os.environ[key] = self.task_config.get("environment")[key]
 
-        self.available_tools = collect_tools(
-            FunctionTool,
-            modules=[
-                tools.characterize_pchembl_value,
-                tools.characterize_nanohelix_gfactor,
-                tools.characterize_Tc_value
-            ]
-        )
+        self.available_tools = tools.create_function_tools_dict()
 
         self._set_util_client(cache_dir=self.cache_dir)
         self._create_agents()
@@ -101,8 +95,7 @@ class PriM:
                 handoff_map = {
                     "user": "planner",
                     "hypothesis": "experiment",
-                    "experiment": "analysis",
-                    "analysis": "planner",
+                    "experiment": "planner",
                     "planner": "hypothesis"
                 }
             _last_speaker = messages[-1].source
@@ -281,7 +274,7 @@ async def main():
         default="configs/nanomaterial-mode-QwenMax-PiFlow-mini.yaml"
     )
 
-    parser.add_argument("--max_turn", required=True, type=int)
+    parser.add_argument("--max_turn", default=73, type=int)
     parser.add_argument("--output", default="run_demo")
     parser.add_argument("--principled", action="store_true", help="Enable principle flow. ")
     parser.add_argument("--prompted", action="store_true", help="Enable Planner's prompt, as the PiFlow is always serving as Plug-and-Play module, Planner can also direct guide the Hypothesis without reasoning/interpreting on the principle (off this), but in practice, we suggest using reasoning over suggested principle for better guidance. ")
@@ -292,24 +285,28 @@ async def main():
     if args.debug:
         logging.getLogger().setLevel(logging.DEBUG)
 
-    # ================== RUN ==================
-    prim = PriM(
-        args,
-        task_cfg_path=args.task_config,
-        model_cfg_path=args.model_config,
-        save_dir=args.output,
-        is_sas=args.sas,
-        is_mas=False, # Set this False when using Hypothesis, Experiment and Analysis Agent only.
-        is_principled=args.principled,
-        is_prompted=args.prompted,
-        cache_dir=None
-    )
+    server_command = [sys.executable, "-u", "envs/start_server.py"]
+    with ServerProcessManager(server_command) as server_proc:
+        time.sleep(2.5)
 
-    stream = prim.team.run_stream(
-        task=prim.task,
-    )
+        # ================== RUN ==================
+        prim = PriM(
+            args,
+            task_cfg_path=args.task_config,
+            model_cfg_path=args.model_config,
+            save_dir=args.output,
+            is_sas=args.sas,
+            is_mas=False, # Set this False when using Hypothesis, Experiment and Analysis Agent only.
+            is_principled=args.principled,
+            is_prompted=args.prompted,
+            cache_dir=None
+        )
 
-    await Console(stream, output_stats=True)
+        stream = prim.team.run_stream(
+            task=prim.task,
+        )
+
+        await Console(stream, output_stats=True)
 
 
 

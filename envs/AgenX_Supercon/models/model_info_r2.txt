@@ -1,0 +1,4 @@
+input_size: 509
+best_epoch: 284
+best_r2: 0.913668
+test_loss: 101.369942

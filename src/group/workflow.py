@@ -1,3 +1,4 @@
+import json
 import math
 import logging
 import warnings
@@ -18,7 +19,7 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_agentchat.messages import ChatMessage, ToolCallSummaryMessage, TextMessage
 from autogen_core import EVENT_LOGGER_NAME
 from autogen_core.models import SystemMessage, UserMessage
-
+from dataclasses import dataclass, asdict
 
 event_logger = logging.getLogger(EVENT_LOGGER_NAME)
 
@@ -43,6 +44,31 @@ class Principle:
 
     def parse_experiment_result(self) -> float:
         return self.experiment.output
+
+
+def custom_encoder(obj):
+    """为不被 JSON 识别的类型提供序列化规则"""
+    if isinstance(obj, Principle):
+        # 手动将 Principle 对象转换为字典
+        return {
+            'id': obj.id,
+            'reward': obj.reward,
+            'hypothesis': obj.hypothesis,  # 值仍然是对象，json.dumps 会再次调用 custom_encoder 处理它
+            'experiment': obj.experiment,
+            'llm_claimed_principle': obj.llm_claimed_principle
+        }
+    if isinstance(obj, (Hypothesis, Experiment)):
+        # 对于 dataclass，使用 asdict() 是最方便的方法
+        return asdict(obj)
+    if isinstance(obj, uuid.UUID):
+        # 将 UUID 对象转换为字符串
+        return str(obj)
+    if obj == np.inf:
+        # JSON 没有无穷大的概念，可以将其表示为字符串或 null
+        return None
+
+    # 如果是其他不识别的类型，抛出错误
+    raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
 
 
 class PrincipleFlow:
@@ -82,7 +108,10 @@ class PrincipleFlow:
 
         self.is_sas = is_sas,
         self.is_mas = is_mas,
-        self.is_principle = is_principled,
+        self.is_principle = is_principled
+
+        self.saved_dynamics = []
+        self.save_dir = save_dir
 
     async def llm_assign_principle(self, hypothesis: str, experiment_result: float) -> str:
         prompt = f"""

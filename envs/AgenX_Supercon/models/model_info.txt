@@ -1,0 +1,4 @@
+input_size: 509
+best_epoch: 284
+best_loss: 101.369942
+r2_score: 0.913668

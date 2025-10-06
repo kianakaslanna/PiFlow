@@ -1,0 +1,35 @@
+supercon:
+    host: 127.0.0.1
+    port: 12502
+
+    experiment:
+        url: /predict_tc
+        method: POST
+
+    tutorial:
+        url: /supercon_tutorial
+        method: GET
+
+    document: |
+        # Superconductor Critical Temperature Prediction
+
+        This model predicts the critical temperature (Tc) of superconducting materials based on their chemical composition.
+
+        ## Input:
+        - Chemical formula in standard notation (e.g., "Ba0.2La1.8Cu1O4-Y")
+        - Optional structure type (e.g., "T" for tetragonal)
+
+        ## Output:
+        - Predicted critical temperature in Kelvin
+
+        ## Scientific Background:
+        Superconductivity is a quantum mechanical phenomenon characterized by zero electrical resistance and expulsion of magnetic fields that occurs in certain materials when cooled below a critical temperature (Tc). Materials with higher Tc values are particularly valuable for practical applications as they require less extreme cooling.
+
+        Key families of superconductors include:
+        - Conventional superconductors (metals and alloys)
+        - Copper-oxide based high-temperature superconductors
+        - Iron-based superconductors
+        - Heavy fermion superconductors
+        - Organic superconductors
+
+        This tool enables virtual experimentation to explore how compositional variations affect the critical temperature.
