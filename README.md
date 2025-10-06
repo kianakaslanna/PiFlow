@@ -1,18 +1,10 @@
-<br>
-<br>
-<br>
-
 <div align="center">
-  <img src="assets/introduction.png">
+  <img src="assets/introduction.png" alt="PiFlow Introduction">
 </div>
 
-
 <div align="center">
-  <h1>
-  PiFlow: Principle-aware Scientific Discovery with Multi-Agent Collaboration
-</h1>
+  <h1>PiFlow: Principle-aware Scientific Discovery with Multi-Agent Collaboration</h1>
 </div>
-
 
 <div align="center">
 
@@ -26,146 +18,112 @@ Westlake University
 
 </div>
 
-
 <div align="center">
   <p>
-    <a href="https://opensource.org/licenses/MIT">
-      <img src="https://img.shields.io/badge/License-CC BY NC 4.0-yellow.svg" alt="License: MIT">
+    <a href="https://creativecommons.org/licenses/by-nc/4.0/">
+      <img src="https://img.shields.io/badge/License-CC BY NC 4.0-yellow.svg" alt="License: CC BY NC 4.0">
     </a>
     &emsp;
     <a href="">
-      <img src="https://img.shields.io/badge/AI4SD-Fully Adaptable & Generalizable-blue.svg" alt="License: MIT">
+      <img src="https://img.shields.io/badge/AI4SD-Fully Adaptable & Generalizable-blue.svg" alt="AI4SD Fully Adaptable & Generalizable">
     </a>
     &emsp;
-    <a href="https://arxiv.org/abs/2505.15047">
-      <img src="https://img.shields.io/badge/arXiv-2505.15047-red.svg" alt="License: MIT">
+    <a href="https://arxiv.org/pdf/2505.15047v2">
+      <img src="https://img.shields.io/badge/arXiv-2505.15047-red.svg" alt="arXiv: 2505.15047">
     </a>
   </p>
 </div>
 
-
 ## 👋 Overview
-We introduce `PiFlow`, an information-theoretical framework. It uniquely treats automated scientific discovery as a structured uncertainty reduction problem, guided by foundational principles (e.g., scientific laws). This ensures a more systematic and rational exploration of scientific problems.
 
-:ballot_box_with_check: You can directly use our PiFlow for **ANY** of your specific tasks for assisting scientific discovery!
+We introduce `PiFlow`, an information-theoretical framework that uniquely treats automated scientific discovery as a structured uncertainty reduction problem, guided by foundational scientific principles. This approach ensures a more systematic and rational exploration of scientific problems.
 
+✅ You can directly use PiFlow for **ANY** of your specific tasks to assist scientific discovery!
 
-## 📃 Results
-PiFlow has demonstrated significant advancements in scientific discovery:
-* Evaluated across three distinct scientific domains:
-    * 🔬 Nanohelix.
-    * 🧬 Bio-molecules.
-    * ⚡ Superconductors.
-* Markedly improves discovery efficiency, reflected by a **73.55% increase** in the Area Under the Curve (AUC) of property values versus exploration steps.
-* Enhances solution quality by an impressive **94.06%** compared to a vanilla agent system.
+## 📃 Primary Results
 
+PiFlow has demonstrated significant advancements in scientific discovery across multiple domains:
+
+* **Comprehensive evaluation**: Tested across three distinct scientific domains:
+    * 🔬 Nanohelix materials
+    * 🧬 Bio-molecules  
+    * ⚡ Superconductors
+
+* **Enhanced efficiency**: Demonstrates a **73.55% increase** in the Area Under the Curve (AUC) of property values versus exploration steps, significantly improving discovery efficiency.
+
+* **Superior solution quality**: Achieves an impressive **94.06% improvement** in solution quality compared to a baseline agent system.
 
 <div align="center">
-  <img src="assets/results.png" alt="results">
+  <img src="assets/results.png" alt="PiFlow Experimental Results" width="80%">
 </div>
 
+PiFlow serves as a plug-and-play method that establishes a novel paradigm for highly efficient automated scientific discovery, paving the way for more robust and accelerated AI-driven research. The framework accommodates various scenarios (bio-molecules, nanomaterials, and superconductor discovery) with diverse experimental conditions, requiring minimal to no prompt engineering for effective agent-level interaction.
 
-PiFlow serves as a Plug-and-Play method, establishing a novel paradigm shift in highly efficient automated scientific discovery, paving the way for more robust and accelerated AI-driven research. Our PiFlow accommodates various scenarios (bio-molecules, nanomaterials and superconductors discovery) with experimental conditions (i.e., tools for agent), necessitating little to no prompt engineering for effective agent-level interaction.
+## 🔧 Setup and How-to-Run
 
-## 🔧 Setup and Run
+### 0. Installation
 
-### 0. Install
-
-To prepare the environment, we recommend executing the following conda instructions: 
+To prepare the environment, execute the following conda commands: 
 
 ```shell
 git clone https://github.com/amair-lab/PiFlow && cd PiFlow
-conda create -f environment.yml  # The environ name will be `piflow`
+conda env create -f environment.yml  # The environment name will be `piflow`
 conda activate piflow 
 
-# We suggest to use mamba for faster installation, though conda works fine, but for preferences... well
-# If you want to use mamba for package management, run these commands:
+# We recommend using mamba for faster installation, though conda works as well
+# If you want to use mamba for package management, run these commands instead:
 # conda install mamba -n base -c conda-forge
 # mamba env create -f environment.yml
 # mamba activate piflow
 ```
 
+### 1. Configuration
 
-### 1. Launch Dynamic Environment
+You need to obtain any **OpenAI-compatible API keys** for calling the models. Ensure that the model embedded within the experimental agent is able to use tools. We recommend using official large models supported by [Alibaba Cloud](https://www.alibabacloud.com/help/zh/model-studio/models).
 
-We have developed three types of experiments named `AgenX...` (e.g., `AgenX_Chembl35`).
-To open the `launch.py` for each scenario's task, run:
-
-```shell
-python launch.py
-````
-
-### 2. Prepare Your API Key
-
-You need to apply for any **OpenAI compatible API KEYs** for calling any models. Ensure the model embedded at the experiment agent is able to use tools.
-
-
-### 3. About Configs and Demo
-
-You can first configure the running commands in the `/configs/` directory, or simply try the demo after model configuration.
-
-In the config for model, every agent contains the config of API and its display mode:
+In the configuration for language models, each agent contains API configuration and display mode settings:
 
 ```yaml
-        streaming:  # bool, true means the output will be in streaming, the same with the original API output
-        api_config:
-            base_url:   # Follow the OpenAI API
-            model_name: # Follow the OpenAI API
-            is_reasoning:   # bool, ture if it is a reasoning model like o1, R1, QwQ, etc. (typically has <think></think> token)
-            api_key:    # Follow the OpenAI API
-            temperature:    # Follow the OpenAI API, generally we set 0.6 or 0.4
-            max_tokens:     # We set 4096 here
-        tools: []   # a list of the tools name, it should be contained and claimed in the `tools/__init__.py`, and follows the YAML's list fashion
+streaming:  # bool, true means the output will be in streaming format, consistent with the original API output
+api_config:
+    base_url:       # Follow the OpenAI API format
+    model_name:     # Follow the OpenAI API format
+    is_reasoning:   # bool, true if it is a reasoning model like o1, R1, QwQ, etc. (typically has longer processing time)
+    api_key:        # Follow the OpenAI API format
+    temperature:    # Follow the OpenAI API, generally set to 0.6 or 0.4
+    max_tokens:     # We set this to 4096
+tools: []           # A list of tool names; they should be defined and declared in `tools/__init__.py`, following YAML list syntax
 ```
 
-Other field like `enabled` means if this Agent is a member of group chatting. Fields like `name` and `description` are the same to the building of Agent profile. Note that, the `name` field should not contain any blank char. 
+Other fields like `enabled` indicate whether this agent is a member of group chat. Fields like `name` and `description` are used for building the agent profile. Note that the `name` field should not contain any blank characters.
 
-After configuration, you can run the demo scenario of nanohelix material discovery, by running:
+After configuration, you can run the demo scenario for nanohelix material discovery (you could also modify the args by `argparse`, see `inference.py`) by running the command:
 
 ```shell
-bash ./run_demo.sh
+python inference.py
 ```
 
-You will see the detailed output with colored chatting history at the command line. Our philosophy is, one config file corresponds to one task, and you should prepare both task config and model config for running PiFlow. 
+You will see detailed output with colored chat history at the command line if success. Our philosophy is that one configuration file corresponds to one task, and you should prepare both task and model configurations for running PiFlow.
 
+## 🪄 Adapting to Your Own Task!
 
+PiFlow offers extensive flexibility to adapt to your own scenarios, such as quantum science, MOF synthesis, and other domains. The framework can assist with various discovery processes.
 
-## 🪄 Adapt to Your Own Task
+To adapt PiFlow to your task, you can design tools based on the provided examples in `tools/...`. Simply copy one file (e.g., `[tool_nanomaterial.py](tools/tool_nanomaterial.py)_nanohelix_tools.py`) and create a new file named according to your scenario (e.g., `_mof_tools.py`), the tools manager will automatically load this new tool, but please remember to add `@register_tool` for assigning both name and desc. Additionally, you should also prepare the output as a JSON format data with the same fields supported by us:
 
-There are many possible tasks that we can use PiFlow to assist the discovery processes: 
-
-<div align="center">
-<table style="margin-left: auto; margin-right: auto;">
-  <tr>
-    <td style="padding: 5px; text-align: center;">
-      <img src="assets/quantums.jpeg" alt="Description of Image 3" style="width: 200px;">
-      <div style="text-align: center">&emsp;&emsp;Quantum Materials</div>
-    </td>
-    <td style="padding: 5px; text-align: center;">
-      <img src="assets/battery.jpeg" alt="Description of Image 1" style="width: 200px;">
-      <p><em>&emsp;&emsp;&emsp;&emsp;Battery</em></p>
-    </td>
-    <td style="padding: 5px; text-align: center;">
-      <img src="assets/protein.jpeg" alt="Description of Image 2" style="width: 200px;">
-      <p><em>&emsp;&emsp;&emsp;&emsp;Proteins</em></p>
-    </td>
-  </tr>
-</table>
-</div>
-
-PiFlow offers full flexibility to adapt to your own scenarios, such as quantum science, MOF synthesis, and others. To adapt to your task, you could design tools based on the given examples at `src/tools/`, simply copy one file, e.g., `_nanohelix_tools.py` and create new one named be your scenario (e.g., `_mof_tools.py`). 
-
-### 1. Create your own tools
-Replace the tools with your own preferred one (Http tools or others), and finally import the tool into `src/tools/__init__.py`. The PiFlow will automatically find your tools and register it. 
-
-### 2. Configurations
-Don't forget to write the configuration file in the `/config/`: For models, just keep it and fill your own API and add tool name to the experiment agent, and for tasks, you should formally define your task similar to the given examples. 
-
-### 3. Test tools and run
-Remember to test your tools to make sure it works fine. After that, you could run with command like `run_PiFlow.sh` and ANY prompt engineering are NOT needed for each agent. 
+```json lines
+{
+    "tool_name": "xxx", // same with `@register_tool`
+    "input": input_data,    // exact hypothesis candidate
+    "output": None,     // the `reward` for PiFlow to maximize
+    "success": True,  // boolean value for checking
+    "error": "xxx"  // helper info
+}
+```
 
 
 ## 📚 Citation
+
 ```bibtex
 @misc{pu2025piflow,
       title={PiFlow: Principle-aware Scientific Discovery with Multi-Agent Collaboration}, 
@@ -178,6 +136,6 @@ Remember to test your tools to make sure it works fine. After that, you could ru
 }
 ```
 
-
 ## 📄 License
+
 This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) License](https://creativecommons.org/licenses/by-nc/4.0/). Under this license, you are free to share and adapt this work for non-commercial purposes, provided you give appropriate attribution.
