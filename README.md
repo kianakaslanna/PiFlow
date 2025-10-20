@@ -36,9 +36,16 @@ Westlake University
 
 ## 👋 Overview
 
-We introduce `PiFlow`, an information-theoretical framework that uniquely treats automated scientific discovery as a structured uncertainty reduction problem, guided by foundational scientific principles. This approach ensures a more systematic and rational exploration of scientific problems.
+We introduce `PiFlow` (Principle Flow), an information-theoretical framework that treats automated scientific discovery as a structured uncertainty reduction problem, guided by foundational scientific principles. This approach ensures a more systematic and rational exploration of scientific problems. You can directly use PiFlow for **ANY** of your specific tasks to assist scientific discovery!
 
-✅ You can directly use PiFlow for **ANY** of your specific tasks to assist scientific discovery!
+
+🔮 Supported Features:
+
+- Budget-limited iterative hypothesis-testing.
+- Saving the full running log of agents.
+- Colored output of different agents in terminal.
+- Case study:
+  - Discovered nanohelix geo-structure with super-high chiral property (g-factor > 1.8) !
 
 ## 📃 Primary Results
 
@@ -79,9 +86,9 @@ conda activate piflow
 
 ### 1. Configuration
 
-You need to obtain any **OpenAI-compatible API keys** for calling the models. Ensure that the model embedded within the experimental agent is able to use tools. We recommend using official large models supported by [Alibaba Cloud](https://www.alibabacloud.com/help/zh/model-studio/models).
+You need to obtain the **OpenAI-compatible API key** for calling the language models. Ensure that the model embedded within the experimental agent is able to use tools. We recommend using official large models supported by [Alibaba Cloud](https://www.alibabacloud.com/help/zh/model-studio/models), e.g. QwenMax.
 
-In the configuration for language models, each agent contains API configuration and display mode settings:
+In the configuration for language models, each agent's profile contains API info and settings like verbose mode:
 
 ```yaml
 streaming:  # bool, true means the output will be in streaming format, consistent with the original API output
@@ -97,30 +104,31 @@ tools: []           # A list of tool names; they should be defined and declared 
 
 Other fields like `enabled` indicate whether this agent is a member of group chat. Fields like `name` and `description` are used for building the agent profile. Note that the `name` field should not contain any blank characters.
 
-After configuration, you can run the demo scenario for nanohelix material discovery (you could also modify the args by `argparse`, see `inference.py`) by running the command:
+After configuration, you can run the demo task for nanohelix material discovery (you could also modify the args by `argparse`, see `inference.py`) by running the command:
 
 ```shell
 python inference.py
 ```
 
-You will see detailed output with colored chat history at the command line if success. Our philosophy is that one configuration file corresponds to one task, and you should prepare both task and model configurations for running PiFlow.
+You will see detailed output with colored chat history at the command line if success. Our philosophy is that **one configuration file corresponds to one task**, and you should prepare both task and model configurations for running PiFlow.
 
-## 🪄 Adapting to Your Own Task!
+## 🪄 Try PiFlow!
 
-PiFlow offers extensive flexibility to adapt to your own scenarios, such as quantum science, MOF synthesis, and other domains. The framework can assist with various discovery processes.
+PiFlow also offers extensive flexibility to adapt to your own scenarios, such as quantum science, MOF synthesis, and other domains, as demonstrated in our manuscript - its **Plug-and-Play** ability. The framework can assist with various discovery processes.
 
 To adapt PiFlow to your task, you can design tools based on the provided examples in `tools/...`. Simply copy one file (e.g., `[tool_nanomaterial.py](tools/tool_nanomaterial.py)_nanohelix_tools.py`) and create a new file named according to your scenario (e.g., `_mof_tools.py`), the tools manager will automatically load this new tool, but please remember to add `@register_tool` for assigning both name and desc. Additionally, you should also prepare the output as a JSON format data with the same fields supported by us:
 
-```json lines
+```python
 {
-    "tool_name": "xxx", // same with `@register_tool`
-    "input": input_data,    // exact hypothesis candidate
-    "output": None,     // the `reward` for PiFlow to maximize
-    "success": True,  // boolean value for checking
-    "error": "xxx"  // helper info
+    "tool_name": "xxx", # same with `@register_tool`
+    "input": "",    # exact hypothesis candidate, str, etc
+    "output": None,     # the `reward` for PiFlow to maximize
+    "success": True,  # boolean value for checking the status
+    "error": "xxx"  # helper info
 }
 ```
 
+Remember to add the tool into the agent profile at model's config file. This is essential because the program will screen all tools defined at `tools/` and load them into the agent's context by filtering the tool name.  
 
 ## 📚 Citation
 
