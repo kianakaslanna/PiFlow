@@ -1,10 +1,10 @@
-<div align="center">
-  <img src="assets/introduction.png" alt="PiFlow Introduction">
-</div>
+
 
 <div align="center">
   <h1>PiFlow: Principle-aware Scientific Discovery with Multi-Agent Collaboration</h1>
 </div>
+
+---
 
 <div align="center">
 
@@ -36,8 +36,15 @@ Westlake University
 
 ## 👋 Overview
 
-We introduce `PiFlow` (Principle Flow), an information-theoretical framework that treats automated scientific discovery as a structured uncertainty reduction problem, guided by foundational scientific principles. This approach ensures a more systematic and rational exploration of scientific problems. You can directly use PiFlow for **ANY** of your specific tasks to assist scientific discovery!
+We introduce `PiFlow` (Principle Flow), an information-theoretical framework that treats automated scientific discovery as a structured uncertainty reduction problem, guided by foundational scientific principles. This approach ensures a more systematic and rational exploration of scientific problems by learning and optimization. You can directly use PiFlow for **ANY** of your specific tasks to assist scientific discovery!
 
+<br/>
+
+<div align="center">
+  <img src="assets/introduction.png" alt="PiFlow Introduction">
+</div>
+
+<br/>
 
 🔮 Supported Features:
 
@@ -45,7 +52,7 @@ We introduce `PiFlow` (Principle Flow), an information-theoretical framework tha
 - Saving the full running log of agents.
 - Colored output of different agents in terminal.
 - Case study:
-  - Discovered nanohelix geo-structure with super-high chiral property (g-factor > 1.8) !
+  - Discovered nanohelix geo-structure with high chiral property (g-factor > 1.8).
 
 ## 📃 Primary Results
 
