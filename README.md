@@ -4,7 +4,6 @@
   <h1>PiFlow: Principle-aware Scientific Discovery with Multi-Agent Collaboration</h1>
 </div>
 
----
 
 <div align="center">
 
