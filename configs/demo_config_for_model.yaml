@@ -40,14 +40,14 @@ agents:
             
             Remember: Your primary goal is to guide the scientific discovery process efficiently by combining structured PrincipleFlow insights with your own reasoning to direct the Hypothesis Agent toward the most promising research paths.
 
-        streaming:
+        streaming: false
         api_config:
-            base_url:
-            model_name:
-            is_reasoning:
-            api_key:
-            temperature:
-            max_tokens:
+            base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+            model_name: "qwen-max"
+            is_reasoning: false
+            api_key: "sk-40fb898679c542ddbd60e3767d70f0a6"
+            temperature: 0.7
+            max_tokens: 4096
         tools: []
 
 
@@ -115,14 +115,14 @@ agents:
             
             Remember: In each iteration, you must generate ONE specific hypothesis with ONE specific experimental candidate. 
 
-        streaming:
+        streaming: false
         api_config:
-            base_url:
-            model_name:
-            is_reasoning:
-            api_key:
-            temperature:
-            max_tokens:
+            base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+            model_name: "qwen-max"
+            is_reasoning: false
+            api_key: "sk-40fb898679c542ddbd60e3767d70f0a6"
+            temperature: 0.7
+            max_tokens: 4096
         tools: []
 
 
@@ -155,11 +155,11 @@ agents:
 
         streaming: true
         api_config:
-            base_url:
-            model_name:
-            is_reasoning:
-            api_key:
-            temperature:
-            max_tokens:
+            base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+            model_name: "qwen-max"
+            is_reasoning: false
+            api_key: "sk-40fb898679c542ddbd60e3767d70f0a6"
+            temperature: 0.7
+            max_tokens: 4096
         tools:
             - "characterize_nanohelix_gfactor"

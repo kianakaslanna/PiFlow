@@ -4,6 +4,7 @@ Startup script for the unified prediction server.
 This script launches a single server containing all prediction models.
 """
 
+
 import os
 import sys
 
@@ -29,6 +30,14 @@ def main():
     # Change to the envs directory
     envs_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(envs_dir)
+
+
+    # --- START: Add this code ---
+    # Add the project root directory to the Python path
+    project_root = os.path.dirname(envs_dir)
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
+    # --- END: Add this code ---
 
     # Import and run the unified server
     try:

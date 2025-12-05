@@ -174,3 +174,19 @@ cython_debug/
 .pypirc
 
 .idea
+
+# 忽略包含敏感信息的配置文件
+configs/demo_config_for_model.yaml
+configs/demo_config_for_task.yaml
+
+# 也可以用通配符忽略所有yaml文件（如果configs目录里没有其他需要上传的yaml）
+# configs/*.yaml
+
+# 忽略Python的缓存文件
+__pycache__/
+*.pyc
+*.pyo
+
+# 忽略conda环境文件（可选，但推荐）
+# 如果你希望别人能用你的环境，就不要忽略 environment.yml
+# 但如果是私有环境信息，可以忽略

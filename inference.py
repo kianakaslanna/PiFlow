@@ -74,8 +74,11 @@ class PriM:
 
         self.cache_storage = DiskCacheStore[CHAT_CACHE_VALUE_TYPE](Cache(directory=cache_dir))
 
-        for key in self.task_config.get("environment").keys():
-            os.environ[key] = self.task_config.get("environment")[key]
+        environment = self.task_config.get("environment")
+        if environment is not None:
+            for key in environment.keys():
+                if environment[key] is not None:
+                    os.environ[key] = environment[key]
 
         self.available_tools = tools.create_function_tools_dict()
 
@@ -119,11 +122,11 @@ class PriM:
     def _set_util_client(self, cache_dir: Optional[str] = None) -> None:
         # Util client serve as a processing tool for analysis with language.
         openai_model_client = OpenAIChatCompletionClient(
-            api_key=os.getenv("UTIL_LLM_CONFIG_API_KEY"),
-            base_url=os.getenv("UTIL_LLM_CONFIG_BASE_URL"),
-            model=os.getenv("UTIL_LLM_CONFIG_NAME"),
-            temperature=float(os.getenv("UTIL_LLM_CONFIG_TEMPERATURE")),
-            max_tokens=int(os.getenv("UTIL_LLM_CONFIG_MAX_TOKENS")),
+            api_key=os.getenv("UTIL_LLM_CONFIG_API_KEY", ""),
+            base_url=os.getenv("UTIL_LLM_CONFIG_BASE_URL", "https://api.openai.com/v1"),
+            model=os.getenv("UTIL_LLM_CONFIG_NAME", "gpt-3.5-turbo"),
+            temperature=float(os.getenv("UTIL_LLM_CONFIG_TEMPERATURE", "0.7")),
+            max_tokens=int(os.getenv("UTIL_LLM_CONFIG_MAX_TOKENS", "2048")),
             model_info={
                 "vision": False,
                 "function_calling": False,
@@ -148,9 +151,9 @@ class PriM:
             raise ValueError("API key is required for OpenAIChatCompletionClient")
 
         openai_client:OpenAIChatCompletionClient = OpenAIChatCompletionClient(
-            api_key=api_key,
-            base_url=llm_config.get("base_url", "https://api.openai.com/v1"),
-            model=llm_config.get("model_name", "gpt-4o"),
+            api_key='sk-40fb898679c542ddbd60e3767d70f0a6',
+            base_url=llm_config.get("base_url", "https://dashscope.aliyuncs.com/compatible-mode/v1"),
+            model=llm_config.get("model_name", "qwen3-next-80b-a3b-thinking"),
             temperature=llm_config.get("temperature", 0.7),
             max_tokens=llm_config.get("max_tokens", 2048),
             model_info={
@@ -265,13 +268,13 @@ async def main():
     # Example configuration
     parser.add_argument(
         "--task_config",
-        default="configs/nanomaterial-task-QwenMax-PiFlow-mini.yaml"
+        default="configs/demo_config_for_task.yaml"
     )
 
     # Example configuration
     parser.add_argument(
         "--model_config",
-        default="configs/nanomaterial-mode-QwenMax-PiFlow-mini.yaml"
+        default="configs/demo_config_for_model.yaml"
     )
 
     parser.add_argument("--max_turn", default=73, type=int)
