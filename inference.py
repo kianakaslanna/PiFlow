@@ -150,10 +150,11 @@ class PriM:
         if not api_key:
             raise ValueError("API key is required for OpenAIChatCompletionClient")
 
+        # Use configuration from llm_config instead of hardcoded values
         openai_client:OpenAIChatCompletionClient = OpenAIChatCompletionClient(
-            api_key='sk-40fb898679c542ddbd60e3767d70f0a6',
-            base_url=llm_config.get("base_url", "https://dashscope.aliyuncs.com/compatible-mode/v1"),
-            model=llm_config.get("model_name", "qwen3-next-80b-a3b-thinking"),
+            api_key=api_key,
+            base_url=llm_config.get("base_url", "http://127.0.0.1:10501/v1"),
+            model=llm_config.get("model_name", "qwen3-8b"),
             temperature=llm_config.get("temperature", 0.7),
             max_tokens=llm_config.get("max_tokens", 2048),
             model_info={

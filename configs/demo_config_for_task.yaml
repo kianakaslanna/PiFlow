@@ -30,12 +30,12 @@ memory_buffer_size: 10
 objective_value: "g-factor"
 
 environment:
-    UTIL_LLM_CONFIG_BASE_URL: "https://dashscope.aliyuncs.com/compatible-mode/v1"
-    UTIL_LLM_CONFIG_NAME: "qwen3-next-80b-a3b-thinking"
-    UTIL_LLM_CONFIG_API_KEY: "sk-40fb898679c542ddbd60e3767d70f0a6"
+    UTIL_LLM_CONFIG_BASE_URL: "http://127.0.0.1:10501/v1"
+    UTIL_LLM_CONFIG_NAME: "/home/qtt/dataset/weights/qwen3-8b"
+    UTIL_LLM_CONFIG_API_KEY: "EMPTY"
     UTIL_LLM_CONFIG_TEMPERATURE: "0.7"
     UTIL_LLM_CONFIG_MAX_TOKENS: "2048"
-    PIFLOW_EMBEDDING_MODEL_NAME: "qwen3-next-80b-a3b-thinking"
-    PIFLOW_EMBEDDING_MODEL_URL: "https://dashscope.aliyuncs.com/compatible-mode/v1"
-    PIFLOW_EMBEDDING_MODEL_API_KEY: "sk-40fb898679c542ddbd60e3767d70f0a6"
+    PIFLOW_EMBEDDING_MODEL_NAME: "/home/qtt/dataset/weights/qwen3-8b"
+    PIFLOW_EMBEDDING_MODEL_URL: "http://127.0.0.1:10501/v1"
+    PIFLOW_EMBEDDING_MODEL_API_KEY: "EMPTY"
     PIFLOW_EMBEDDING_MODEL_DIMENSIONS: "1024"

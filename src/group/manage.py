@@ -116,6 +116,10 @@ class HypoValidGroupChat(SelectorGroupChat):
         self._candidate_func = candidate_func
         self._model_client_streaming = model_client_streaming
 
+        # Store the output file path for saving notes
+        self._note_taker_output_file = note_taker_output_file
+        self._all_messages = []  # Store all messages for later saving
+
     async def run_stream(
         self,
         *,
@@ -323,9 +327,14 @@ class HypoValidGroupChat(SelectorGroupChat):
                     # Skip the model client streaming chunk events.
                     continue
                 output_messages.append(message)
+                # Store all messages for note taking
+                self._all_messages.append(message)
 
             # Yield the final result.
             result = TaskResult(messages=output_messages, stop_reason=stop_reason)
+
+            # Save running notes to file
+            self._save_running_notes(output_messages, stop_reason)
 
             yield result
 
@@ -342,3 +351,76 @@ class HypoValidGroupChat(SelectorGroupChat):
 
                 # Indicate that the team is no longer running.
                 self._is_running = False
+
+    def _save_running_notes(self, messages: List[BaseAgentEvent | BaseChatMessage], stop_reason: str | None):
+        """Save running notes to JSON file"""
+        import json
+        import os
+
+        if not self._note_taker_output_file:
+            return
+
+        # Create directory if it doesn't exist
+        os.makedirs(os.path.dirname(self._note_taker_output_file), exist_ok=True)
+
+        # Convert messages to serializable format
+        notes = {
+            "stop_reason": stop_reason,
+            "total_messages": len(messages),
+            "messages": []
+        }
+
+        for msg in messages:
+            msg_dict = {
+                "type": type(msg).__name__,
+                "source": getattr(msg, "source", None),
+            }
+
+            # Add content if available
+            if hasattr(msg, "content"):
+                content = msg.content
+                # Handle non-serializable content
+                if isinstance(content, str):
+                    msg_dict["content"] = content
+                elif isinstance(content, (list, dict)):
+                    msg_dict["content"] = self._make_serializable(content)
+                else:
+                    msg_dict["content"] = str(content)
+
+            # Add tool call information
+            if hasattr(msg, "tool_calls"):
+                msg_dict["tool_calls"] = self._make_serializable(msg.tool_calls)
+            if hasattr(msg, "function"):
+                msg_dict["function"] = self._make_serializable(msg.function)
+            if hasattr(msg, "input"):
+                msg_dict["input"] = self._make_serializable(msg.input)
+            if hasattr(msg, "output"):
+                msg_dict["output"] = self._make_serializable(msg.output)
+
+            notes["messages"].append(msg_dict)
+
+        # Save to file
+        with open(self._note_taker_output_file, "w", encoding="utf-8") as f:
+            json.dump(notes, f, indent=2, ensure_ascii=False)
+
+        print(f"\n✅ Running notes saved to: {self._note_taker_output_file}")
+
+    def _make_serializable(self, obj):
+        """Convert objects to JSON serializable format"""
+        if obj is None:
+            return None
+        elif isinstance(obj, (str, int, float, bool)):
+            return obj
+        elif isinstance(obj, dict):
+            return {k: self._make_serializable(v) for k, v in obj.items()}
+        elif isinstance(obj, (list, tuple)):
+            return [self._make_serializable(item) for item in obj]
+        elif hasattr(obj, "__dict__"):
+            # Convert object to dict
+            return {
+                "type": type(obj).__name__,
+                "data": self._make_serializable(obj.__dict__)
+            }
+        else:
+            # Fallback to string representation
+            return str(obj)

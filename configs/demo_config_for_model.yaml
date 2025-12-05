@@ -42,10 +42,10 @@ agents:
 
         streaming: false
         api_config:
-            base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
-            model_name: "qwen-max"
+            base_url: "http://127.0.0.1:10501/v1"
+            model_name: "/home/qtt/dataset/weights/qwen3-8b"
             is_reasoning: false
-            api_key: "sk-40fb898679c542ddbd60e3767d70f0a6"
+            api_key: "EMPTY"
             temperature: 0.7
             max_tokens: 4096
         tools: []
@@ -117,10 +117,10 @@ agents:
 
         streaming: false
         api_config:
-            base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
-            model_name: "qwen-max"
+            base_url: "http://127.0.0.1:10501/v1"
+            model_name: "/home/qtt/dataset/weights/qwen3-8b"
             is_reasoning: false
-            api_key: "sk-40fb898679c542ddbd60e3767d70f0a6"
+            api_key: "EMPTY"
             temperature: 0.7
             max_tokens: 4096
         tools: []
@@ -155,10 +155,10 @@ agents:
 
         streaming: true
         api_config:
-            base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
-            model_name: "qwen-max"
+            base_url: "http://127.0.0.1:10501/v1"
+            model_name: "/home/qtt/dataset/weights/qwen3-8b"
             is_reasoning: false
-            api_key: "sk-40fb898679c542ddbd60e3767d70f0a6"
+            api_key: "EMPTY"
             temperature: 0.7
             max_tokens: 4096
         tools:
